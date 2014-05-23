@@ -1,0 +1,9 @@
+{
+  "packages": {
+    "spin": {},
+    "jade": {},
+    "iron-router": {},
+    "iron-router-progress": {},
+    "fast-render": {}
+  }
+}
