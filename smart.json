@@ -2,8 +2,7 @@
   "packages": {
     "spin": {},
     "jade": {},
-    "iron-router": {},
-    "iron-router-progress": {},
-    "fast-render": {}
+    "fast-render": {},
+    "accounts-ui-bootstrap-3": {}
   }
 }
