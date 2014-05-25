@@ -1,9 +1,9 @@
 if Meteor.isClient
-  # Template.hello.greeting = ()->
+  # Template.home.greeting = ()->
     # "Welcome to slovo."
 
-  Template.hello.events
-    'click #js-hello-btn': ()->
+  Template.home.events
+    'click #js-home-btn': ()->
       if typeof(console) != 'undefined'
         console.log "You pressed the button"
 
