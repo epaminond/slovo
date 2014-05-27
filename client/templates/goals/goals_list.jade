@@ -1,0 +1,9 @@
+template(name='goalsList')
+  each goals
+    .panel.panel-default
+      .panel-heading
+        = title
+        button.btn.btn-default.btn-xs.pull-right
+          span.glyphicon.glyphicon-pencil
+      .panel-body
+        = description

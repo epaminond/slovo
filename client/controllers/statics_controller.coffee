@@ -1,2 +1,2 @@
-StaticsController = RouteController.extend
+@StaticsController = RouteController.extend
   template: "home"

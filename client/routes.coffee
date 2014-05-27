@@ -3,4 +3,5 @@ Router.configure
   loadingTemplate: "loading"
 
 Router.map ->
-  @route "home", path: "/"
+  @route "home", path: "/", controller: StaticsController
+  @route "goals", path: "/goals", controller: GoalsListController

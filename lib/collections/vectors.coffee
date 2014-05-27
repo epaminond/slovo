@@ -1,0 +1,1 @@
+@Vectors = new Meteor.Collection 'vectors'
