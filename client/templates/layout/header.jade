@@ -11,7 +11,10 @@ template(name='header')
           a.navbar-brand(href='#') Slovo
         .navbar-collapse.collapse
           ul.nav.navbar-nav
-            li.active
-              a(href='#') Home
+            li(class="{{activeRouteClass 'home'}}")
+              a(href="{{pathFor 'home'}}") Home
+            if currentUser
+              li(class="{{activeRouteClass 'goals'}}")
+                a(href="{{pathFor 'goals'}}") Goals
           ul.nav.navbar-nav.navbar-right
             +loginButtons

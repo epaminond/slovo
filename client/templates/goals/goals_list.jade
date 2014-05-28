@@ -1,9 +1,14 @@
 template(name='goalsList')
-  each goals
-    .panel.panel-default
-      .panel-heading
-        = title
-        button.btn.btn-default.btn-xs.pull-right
-          span.glyphicon.glyphicon-pencil
-      .panel-body
-        = description
+  if goalsAny
+    each goals
+      .panel.panel-default
+        .panel-heading
+          = title
+          button.btn.btn-default.btn-xs.pull-right
+            span.glyphicon.glyphicon-pencil
+        .panel-body
+          = description
+  else
+    p You have no goals added. Why?
+  a.btn.btn-success
+    span.glyphicon.glyphicon-plus
