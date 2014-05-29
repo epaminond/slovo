@@ -4,11 +4,14 @@ template(name='goalsList')
       .panel.panel-default
         .panel-heading
           = title
-          button.btn.btn-default.btn-xs.pull-right
+          button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
+            span.glyphicon.glyphicon-remove
+          span.pull-right &nbsp;
+          button.btn.btn-default.btn-xs.pull-right.js-edit-goal
             span.glyphicon.glyphicon-pencil
         .panel-body
           = description
   else
     p You have no goals added. Why?
-  a.btn.btn-success
+  a(href="{{pathFor 'goalNew'}}").btn.btn-success
     span.glyphicon.glyphicon-plus
