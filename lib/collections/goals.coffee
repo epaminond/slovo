@@ -1,21 +1,20 @@
 @Goals = new Meteor.Collection 'goals'
 
 Goals.allow
-  update: @ownsDocument
-  remove: @ownsDocument
+  # TODO: try to use validation instead of method
+  # insert: (userId, goal)->
+  #   goal.title?
 
-Meteor.methods
-  addGoal: (goalAttributes)->
-    user = Meteor.user()
+  # TODO: why doesn't this work?
+  # update: @ownsDocument
+  # remove: @ownsDocument
+  update: (userId, goal)->
+    @ownsDocument(userId, goal)
+  remove: (userId, goal)->
+    @ownsDocument(userId, goal)
 
-    if !user
-      throw new Meteor.Error(401, "You need to login to post new stories")
-    if !goalAttributes.title
-      throw new Meteor.Error(422, 'Please fill in a headline')
-
-    goal = _.extend _.pick(goalAttributes, 'title', 'description'),
-      userId:     user._id
-      submitted:  new Date().getTime()
-    Goals.insert goal
-
-  removeGoal: (_id)-> Goals.remove(_id)
+Goals.deny
+  # insert: (userId, goal, fieldNames)->
+  #   _.without(fieldNames, 'description', 'title').length > 0
+  update: (userId, goal, fieldNames)->
+    _.without(fieldNames, 'description', 'title').length > 0

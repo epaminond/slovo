@@ -2,16 +2,18 @@ template(name='goalsList')
   if goalsAny
     each goals
       .panel.panel-default
-        .panel-heading
+        .panel-body
+          span.glyphicon.glyphicon-info-sign(data-toggle="tooltip",
+            title=description)
+          | &nbsp;
           = title
           button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
             span.glyphicon.glyphicon-remove
           span.pull-right &nbsp;
           button.btn.btn-default.btn-xs.pull-right.js-edit-goal
             span.glyphicon.glyphicon-pencil
-        .panel-body
-          = description
   else
-    p You have no goals added. Why?
+    //- TODO: random quote
+    p He who has a why to live for can bear almost any how. Do you have?
   a(href="{{pathFor 'goalNew'}}").btn.btn-success
     span.glyphicon.glyphicon-plus
