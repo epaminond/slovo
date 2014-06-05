@@ -1,4 +1,4 @@
-template(name='goalForm')
+template(name='goalNew')
   form.form-horizontal(role="form")
     .form-group
       label.control-label.col-sm-2(for='title') Title
@@ -8,6 +8,13 @@ template(name='goalForm')
       label.control-label.col-sm-2(for='description') Description
       .col-sm-10
         textarea.form-control(name='description' type='text' value=description)
+    .form-group
+      label.control-label.col-sm-2(for='parentGoalId') Parent Goal
+      .col-sm-10
+        select.form-control(name='parentGoalId' value=parentGoalId)
+          option
+          each goals
+            option(value=_id)= title
     .form-group
       .col-sm-offset-2.col-sm-10
         input.btn.btn-primary(type='submit' value='Submit')

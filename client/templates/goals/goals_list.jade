@@ -3,15 +3,16 @@ template(name='goalsList')
     each goals
       .panel.panel-default
         .panel-body
-          span.glyphicon.glyphicon-info-sign(data-toggle="tooltip",
-            title=description)
-          | &nbsp;
-          = title
-          button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
-            span.glyphicon.glyphicon-remove
-          span.pull-right &nbsp;
-          button.btn.btn-default.btn-xs.pull-right.js-edit-goal
-            span.glyphicon.glyphicon-pencil
+          .row
+            .col-sm-10
+              = title
+              span.text-muted= description
+            .col-sm-2
+              button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
+                span.glyphicon.glyphicon-remove
+              span.pull-right &nbsp;
+              button.btn.btn-default.btn-xs.pull-right.js-edit-goal
+                span.glyphicon.glyphicon-pencil
   else
     //- TODO: random quote
     p He who has a why to live for can bear almost any how. Do you have?

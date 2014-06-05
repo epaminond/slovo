@@ -1,2 +1,2 @@
-@ownsDocument = (userId, goal, fieldNames)->
+@ownsDocument = (userId, goal)->
   goal? && userId == goal.userId
