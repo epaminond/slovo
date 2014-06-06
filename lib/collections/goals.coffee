@@ -13,4 +13,5 @@ Goals.allow
 
 Goals.deny
   update: (userId, goal, fieldNames)->
-    _.without(fieldNames, 'description', 'title', 'parentGoalId').length > 0
+    _.without(fieldNames, 'description', 'title',
+      'parentGoalId', 'pctCompleted').length > 0

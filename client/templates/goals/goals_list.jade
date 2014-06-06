@@ -4,9 +4,14 @@ template(name='goalsList')
       .panel.panel-default
         .panel-body
           .row
-            .col-sm-10
+            .col-sm-8
               = title
               span.text-muted= description
+            .col-sm-2
+              .progress.progress-striped
+                .progress-bar.progress-bar-success(role="progressbar"
+                  aria-valuenow="{{pctCompleted}}" aria-valuemin="0"
+                  aria-valuemax="100" style="width: {{pctCompleted}}%")
             .col-sm-2
               button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
                 span.glyphicon.glyphicon-remove

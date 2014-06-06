@@ -10,6 +10,7 @@ Template.goalNew.events
       title:        $(event.target).find('[name=title]').val()
       description:  $(event.target).find('[name=description]').val()
       parentGoalId: $(event.target).find('[name=parentGoalId]').val()
+      pctCompleted: 0
 
     Meteor.call 'addGoal', goal, (error, id)->
       if error?
