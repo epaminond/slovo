@@ -10,11 +10,16 @@ template(name='goalNew')
         textarea.form-control(name='description' type='text' value=description)
     .form-group
       label.control-label.col-sm-2(for='parentGoalId') Parent Goal
-      .col-sm-10
+      .col-sm-8
         select.form-control(name='parentGoalId' value=parentGoalId)
           option
           each goals
             option(value=_id)= title
+      .col-sm-2
+        .input-group
+          input.form-control(name='pctOfParentGoal' type='text' maxlength='3'
+            value=pctOfParentGoal disabled='true')
+          span.input-group-addon %
     .form-group
       .col-sm-offset-2.col-sm-10
         input.btn.btn-primary(type='submit' value='Submit')

@@ -7,7 +7,8 @@ Meteor.methods
     if !goalAttributes.title
       throw new Meteor.Error(422, 'Please fill in a headline')
 
-    safe_attrs = _.pick(goalAttributes, 'title', 'description', 'parentGoalId')
+    safe_attrs = _.pick goalAttributes, 'title', 'description', 'parentGoalId',
+      'pctOfParentGoal'
     goal = _.extend safe_attrs,
       userId:     user._id
       submitted:  new Date().getTime()
