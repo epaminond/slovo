@@ -1,7 +1,7 @@
 Template.goalEdit.helpers
   parentGoals: (_id)-> Goals.find
     $and: [
-      { _id: { $ne: "2SjsiFyw7xMN9rYf8" }},
+      { _id: { $ne: @_id }},
       { userId: Meteor.userId()}
     ]
   selectedGoal: (currentParentGoalId)-> currentParentGoalId == @_id
