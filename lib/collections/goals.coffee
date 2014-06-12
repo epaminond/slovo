@@ -1,4 +1,39 @@
-@Goals = new Meteor.Collection 'goals'
+@Goals = new Meteor.Collection 'goals',
+  schema:
+    # _id:
+    #   type: String
+    #   regEx: SimpleSchema.RegEx.Id
+    userId:
+      type: String
+      regEx: SimpleSchema.RegEx.Id
+    title:
+      type: String
+      label: "Title"
+      max: 100
+    description:
+      type: String
+      label: "Description"
+      optional: true
+      max: 5000
+    parentGoalId:
+      type: String
+      optional: true
+      regEx: SimpleSchema.RegEx.Id
+      label: "Parent Goal"
+    pctOfParentGoal:
+      type: Number
+      label: "Percent of Parent Goal"
+      optional: true
+      min: 0
+      max: 100
+    pctCompleted:
+      type: Number
+      label: "Completed"
+      min: 0
+      max: 100
+    createdAt:
+      type: Date
+      label: "Date, goal was created"
 
 Goals.allow
 
@@ -6,6 +41,8 @@ Goals.allow
   # update: @ownsDocument
   # remove: @ownsDocument
 
+  insert: (userId, goal)->
+    @ownsDocument(userId, goal)
   update: (userId, goal)->
     @ownsDocument(userId, goal)
   remove: (userId, goal)->
