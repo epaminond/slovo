@@ -6,12 +6,13 @@
   template: "goalForm"
   waitOn: ->
     Meteor.subscribe "goals", userId: Meteor.userId()
-  data: -> Goals.findOne @params._id
-  onAfterAction: ->
-    Session.set 'goalAction', 'update'
+  data: ->
+    goal: Goals.findOne @params._id
+    action: 'update'
 
 @GoalsNewController = RouteController.extend
   template: "goalForm"
   waitOn: -> Meteor.subscribe "goals", userId: Meteor.userId()
-  onAfterAction: ->
-    Session.set 'goalAction', 'insert'
+  data:
+    action: 'insert'
+    goal: null

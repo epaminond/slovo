@@ -1,20 +1,19 @@
 Template.goalForm.helpers
-  parentGoals: (_id)->
+  parentGoals: ->
     [{label: '', value: ''}].concat Goals.find(
       $and: [
-        { _id: { $ne: @_id }},
+        { _id: { $ne: @goal._id }},
         { userId: Meteor.userId()}
       ]
     ).map((goal)-> {label: goal.title, value: goal._id})
   pctCompletedLive: ->
     pctCompletedLive = Session.get "pctCompletedLive"
-    if pctCompletedLive? then pctCompletedLive else @pctCompleted
-  pctOfParentGoalDisabled: -> !@parentGoalId? || @parentGoalId == ''
+    if pctCompletedLive? then pctCompletedLive else @goal.pctCompleted
+  pctOfParentGoalDisabled: ->
+    !@goal.parentGoalId? || @goal.parentGoalId == ''
   rendered: (event)->
     AutoForm.resetForm 'goalForm'
     Session.set "pctCompletedLive", $('[name=pctCompleted]').val()
-  formType: -> Session.get 'goalAction' # TODO: consider not using session for this
-  doc: -> if Session.get('goalAction') == 'update' then @ else null
 
 Template.goalForm.events
   'change [name=pctCompleted]': (event)-> Session.set "pctCompletedLive", event.target.value
