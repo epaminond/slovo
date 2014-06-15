@@ -1,18 +1,26 @@
-@GoalsListController = RouteController.extend
-  template: "goalsList"
+GoalsController = RouteController.extend
+  onBeforeAction: ->
+    unless Meteor.userId()
+      Router.go('home')
+      Session.set "alert",
+        level: "danger"
+        message: "Access denied"
   waitOn: -> Meteor.subscribe "goals", userId: Meteor.userId()
 
-@GoalEditController = RouteController.extend
+@GoalsListController = GoalsController.extend
+  template: "goalsList"
+  data: ->
+    goals: Goals.find userId: Meteor.userId()
+
+@GoalEditController = GoalsController.extend
   template: "goalForm"
-  waitOn: ->
-    Meteor.subscribe "goals", userId: Meteor.userId()
   data: ->
     goal: Goals.findOne @params._id
     action: 'update'
 
-@GoalsNewController = RouteController.extend
+@GoalsNewController = GoalsController.extend
   template: "goalForm"
-  waitOn: -> Meteor.subscribe "goals", userId: Meteor.userId()
   data:
     action: 'insert'
-    goal: null
+    goal:
+      pctCompleted: 0

@@ -1,4 +1,7 @@
 template(name='layout')
   .container
     +header
+    div(class="{{alertLevel}}")
+      button.close(type="button") &times;
+      | {{alertMessage}}
     +yield

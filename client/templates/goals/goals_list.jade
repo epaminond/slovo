@@ -1,24 +1,23 @@
 template(name='goalsList')
-  if goalsAny
-    each goals
-      .panel.panel-default
-        .panel-body
-          .row
-            .col-sm-8
-              = title
-              span.text-muted= description
-            .col-sm-2
-              .progress.progress-striped
-                .progress-bar.progress-bar-success(role="progressbar"
-                  aria-valuenow="{{pctCompleted}}" aria-valuemin="0"
-                  aria-valuemax="100" style="width: {{pctCompleted}}%")
-            .col-sm-2
-              button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
-                span.glyphicon.glyphicon-remove
-              span.pull-right &nbsp;
-              button.btn.btn-default.btn-xs.pull-right.js-edit-goal
-                span.glyphicon.glyphicon-pencil
-  else
+  each goals
+    .panel.panel-default
+      .panel-body
+        .row
+          .col-sm-8
+            = title
+            span.text-muted= description
+          .col-sm-2
+            .progress.progress-striped
+              .progress-bar.progress-bar-success(role="progressbar"
+                aria-valuenow="{{pctCompleted}}" aria-valuemin="0"
+                aria-valuemax="100" style="width: {{pctCompleted}}%")
+          .col-sm-2
+            button.btn.btn-danger.btn-xs.pull-right.js-remove-goal
+              span.glyphicon.glyphicon-remove
+            span.pull-right &nbsp;
+            button.btn.btn-default.btn-xs.pull-right.js-edit-goal
+              span.glyphicon.glyphicon-pencil
+  if noGoals
     //- TODO: random quote
     p He who has a why to live for can bear almost any how. Do you have?
   a(href="{{pathFor 'goalNew'}}").btn.btn-success

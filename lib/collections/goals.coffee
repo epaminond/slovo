@@ -1,8 +1,5 @@
 @Goals = new Meteor.Collection 'goals',
   schema:
-    # _id:
-    #   type: String
-    #   regEx: SimpleSchema.RegEx.Id
     userId:
       type: String
       regEx: SimpleSchema.RegEx.Id
