@@ -25,9 +25,8 @@ template(name='goalForm')
       .form-group
         .col-sm-offset-2.col-sm-10
           .progress.progress-striped.active
-            .progress-bar.progress-bar-success(role="progressbar"
-              aria-valuenow="{{pctCompletedLive}}" aria-valuemin="0"
-              aria-valuemax="100" style="width: {{pctCompletedLive}}%")
+            .progress-bar.progress-bar-success#js-success-bar(role="progressbar"
+              aria-valuemin="0" aria-valuemax="100" style="width: {{goal.pctCompleted}}%")
       .form-group
         .col-sm-offset-2.col-sm-10
           input.btn.btn-primary(type='submit' value='Submit')
