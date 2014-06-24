@@ -7,16 +7,28 @@ Template.goalForm.helpers
       ]
     ).map (goal)-> {label: goal.title, value: goal._id}
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
-  blockPosition: (goal)->
-    parentGoal = Goals.findOne(parentGoalId: goal.parentGoalId)
-    # prevSiblingGoal = Goals.find(parentGoalId: goal.parentGoalId).fetch()
-    # parseFloat($("##{parentGoal._id}").css('right')) / parseFloat($("##{parentGoal._id}").css("font-size"));
+  getCssInEms: ($obj, property)-> parseFloat($obj.css property) / parseFloat($obj.css "font-size")
+  blockPosition: (parentGoalId)->
+    $parentGoalBlock = $("##{parentGoalId}")
+    if $parentGoalBlock.length > 0
+      sideIntendence = Template.goalForm.getCssInEms($parentGoalBlock, 'right') + 10
+    else
+      sideIntendence = 0
+
+    connections = jsPlumb.getConnections(source: parentGoalId)
+    topSiblings = connections.map (element) ->
+      Template.goalForm.getCssInEms $(element.target), 'top'
+    topSiblings = topSiblings.filter (el)-> !isNaN(el)
+    highestTop  = if topSiblings.length > 0 then Math.max.apply(Math, topSiblings) else 0
+    topIntendence = highestTop + 3
+
+    { right: "#{sideIntendence}em", top: "#{topIntendence}em" }
 
   rendered: (event)->
     AutoForm.resetForm 'goalForm'
 
     jsPlumb.ready ->
-      instance = jsPlumb.getInstance
+      jsPlumb.Defaults =
         Connector: ["Bezier", curviness: 30]
         PaintStyle:
           strokeStyle: "gray"
@@ -29,25 +41,24 @@ Template.goalForm.helpers
           fillStyle: "#ec9f2e"
         Container: "goal-tree"
 
-      instance.doWhileSuspended ->
-
+      jsPlumb.doWhileSuspended ->
         for goal in Goals.find().fetch()
-          console.log Template.goalForm.blockPosition(goal)
+          $block = $("<div class=\"block panel panel-default\" id=\"#{goal._id}\"></div>")
+          $block.html("<div class=\"col-md-12\">#{goal.title}</div>")
+          $block.css Template.goalForm.blockPosition(goal.parentGoalId)
+          $('#goal-tree').append $block
 
-        for block in $(".block-diagram .block")
-          instance.addEndpoint block,
-            uuid: block.getAttribute("id") + "-right"
-            anchor: "Right"
-            maxConnections: -1
-          instance.addEndpoint block,
-            uuid: block.getAttribute("id") + "-left"
+          jsPlumb.addEndpoint $block,
+            uuid: "#{$block.attr("id")}-left"
             anchor: "Left"
             maxConnections: -1
 
-        instance.connect uuids: ["chartWindow1-left", "chartWindow2-right"]
-        instance.connect uuids: ["chartWindow1-left", "chartWindow3-right"]
-
-      jsPlumb.fire "jsPlumbDemoLoaded", instance
+          if goal.parentGoalId?
+            jsPlumb.addEndpoint $block,
+              uuid: "#{$block.attr("id")}-right"
+              anchor: "Right"
+              maxConnections: -1
+            jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
     return
 
 Template.goalForm.events
