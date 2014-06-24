@@ -22,5 +22,4 @@ GoalsController = RouteController.extend
   template: "goalForm"
   data:
     action: 'insert'
-    goal:
-      pctCompleted: 0
+    goal: {}

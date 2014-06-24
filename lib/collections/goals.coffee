@@ -1,5 +1,9 @@
 @Goals = new Meteor.Collection 'goals',
   schema:
+    _id:
+      type: String
+      regEx: SimpleSchema.RegEx.Id
+      optional: true
     userId:
       type: String
       regEx: SimpleSchema.RegEx.Id
@@ -26,6 +30,7 @@
     pctCompleted:
       type: Number
       label: "Completed"
+      optional: true
       min: 0
       max: 100
     createdAt:

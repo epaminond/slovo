@@ -1,7 +1,26 @@
-body {
-  padding: 20px 0 20px;
+body { padding: 20px 0 20px; }
+.navbar { margin-bottom: 20px; }
+
+/** BLOCK DIAGRAM **/
+.block-diagram {
+  position: relative;
 }
 
-.navbar {
-  margin-bottom: 20px;
+._jsPlumb_endpoint { cursor:pointer; }
+
+.block {
+  text-align:center;
+  position:absolute;
+  cursor:pointer;
 }
+
+/** ELEMENTS **/
+.block-diagram .block {
+  border:0.1em dotted #d4e06b;
+  line-height:4em;
+}
+
+/** ELEMENT POSITIONS **/
+#chartWindow1 { left:40em; top:3em;}
+#chartWindow2 { left:20em; }
+#chartWindow3 { left:20em; top:6em; }
