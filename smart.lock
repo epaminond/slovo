@@ -2,18 +2,17 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "spin": {},
       "jade": {},
       "fast-render": {},
       "accounts-ui-bootstrap-3": {},
-      "autoform": {}
+      "autoform": {},
+      "collection2": {},
+      "iron-router": {},
+      "bootstrap-3": {},
+      "iron-router-progress": {},
+      "spin": {}
     },
     "packages": {
-      "spin": {
-        "git": "https://github.com/SachaG/meteor-spin.git",
-        "tag": "v0.2.2",
-        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
-      },
       "jade": {
         "git": "https://github.com/mquandalle/meteor-jade.git",
         "tag": "v0.2.4",
@@ -34,20 +33,45 @@
         "tag": "v0.13.0",
         "commit": "3f294ddf3ed0acae714d5ceb8a806b25cdcd0197"
       },
-      "simple-schema": {
-        "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.5.1",
-        "commit": "a29956b34d03a4591dbd0eaed9d37009ef48b8db"
-      },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
         "tag": "v0.4.1",
         "commit": "a9ffc9b285c3af8ad631f9cda4851b0ffc30c5ce"
       },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+      },
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v3.1.1-1",
+        "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
+      },
+      "iron-router-progress": {
+        "git": "https://github.com/Multiply/iron-router-progress.git",
+        "tag": "v0.4.0",
+        "commit": "02f78bdaca4c13d59f548d5a0ce83408c34b56d1"
+      },
+      "spin": {
+        "git": "https://github.com/SachaG/meteor-spin.git",
+        "tag": "v0.2.2",
+        "commit": "3f655f0016228e4195acc784c45d3e3a247dc39f"
+      },
+      "simple-schema": {
+        "git": "https://github.com/aldeed/meteor-simple-schema.git",
+        "tag": "v0.5.1",
+        "commit": "a29956b34d03a4591dbd0eaed9d37009ef48b8db"
+      },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
       }
     }
   }
