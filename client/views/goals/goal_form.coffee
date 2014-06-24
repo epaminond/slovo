@@ -7,12 +7,17 @@ Template.goalForm.helpers
       ]
     ).map (goal)-> {label: goal.title, value: goal._id}
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
+  blockPosition: (goal)->
+    parentGoal = Goals.findOne(parentGoalId: goal.parentGoalId)
+    # prevSiblingGoal = Goals.find(parentGoalId: goal.parentGoalId).fetch()
+    # parseFloat($("##{parentGoal._id}").css('right')) / parseFloat($("##{parentGoal._id}").css("font-size"));
+
   rendered: (event)->
     AutoForm.resetForm 'goalForm'
 
     jsPlumb.ready ->
       instance = jsPlumb.getInstance
-        Connector: ["Bezier", curviness: 50]
+        Connector: ["Bezier", curviness: 30]
         PaintStyle:
           strokeStyle: "gray"
           lineWidth: 2
@@ -25,14 +30,11 @@ Template.goalForm.helpers
         Container: "goal-tree"
 
       instance.doWhileSuspended ->
-        data =
-          chartWindow1:
-            chartWindow2: {}
-            chartWindow3: {}
 
-        blocks = $(".block-diagram .block")
+        for goal in Goals.find().fetch()
+          console.log Template.goalForm.blockPosition(goal)
 
-        for block in blocks
+        for block in $(".block-diagram .block")
           instance.addEndpoint block,
             uuid: block.getAttribute("id") + "-right"
             anchor: "Right"
@@ -46,6 +48,7 @@ Template.goalForm.helpers
         instance.connect uuids: ["chartWindow1-left", "chartWindow3-right"]
 
       jsPlumb.fire "jsPlumbDemoLoaded", instance
+    return
 
 Template.goalForm.events
   'change [name=pctCompleted]': (event)-> $('#js-success-bar').width("#{event.target.value}%")
