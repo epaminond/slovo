@@ -7,20 +7,6 @@ Template.goalForm.helpers
       ]
     ).map (goal)-> {label: goal.title, value: goal._id}
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
-  getCssInEms: ($obj, property)-> parseFloat($obj.css property) / parseFloat($obj.css "font-size")
-  blockPosition: (parentGoalId)->
-    $parentGoalBlock = $("##{parentGoalId}")
-    if $parentGoalBlock.length > 0
-      sideIndent = Template.goalForm.getCssInEms($parentGoalBlock, 'right') + 10
-    else
-      sideIndent = 0
-    connections = jsPlumb.getConnections(source: parentGoalId)
-    topSiblings = connections.map (element) ->
-      Template.goalForm.getCssInEms $(element.target), 'top'
-    topSiblings = topSiblings.filter (el)-> !isNaN(el)
-    highestTop  = if topSiblings.length > 0 then Math.max.apply(Math, topSiblings) else 0
-    topIndent = highestTop + 3
-    { right: "#{sideIndent}em", top: "#{topIndent}em" }
 
 Template.goalForm.rendered = ->
   AutoForm.resetForm 'goalForm'
@@ -43,9 +29,7 @@ Template.goalForm.rendered = ->
 
     jsPlumb.doWhileSuspended ->
       for goal in Goals.find({$or: [{_id: endGoal._id}, {parentGoalId: endGoal._id}]}).fetch()
-        $block = $("<div class=\"block panel panel-default\" id=\"#{goal._id}\"></div>")
-        $block.html("<div class=\"col-md-12\">#{goal.title}</div>")
-        $block.css Template.goalForm.blockPosition(goal.parentGoalId)
+        $block = $ UI.renderWithData(Template.goalConstructorItem, goal).render().toHTML()
         $('#goal-tree').append $block
 
         jsPlumb.addEndpoint $block,
