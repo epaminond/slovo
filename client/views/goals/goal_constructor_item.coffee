@@ -16,3 +16,8 @@ Template.goalConstructorItem.helpers
       topIndent += 4
       position = "right: #{sideIndent}em; top: #{topIndent}em"
     position
+
+Template.goalConstructorItem.events
+  'click .js-edit-goal': (event, a, b)->
+    console.log 'event, a, b'
+    # $(UI.renderWithData(Template.goalModalForm, {action: 'update', goal: Goals.findOne()}).render().toHTML()).modal('show')

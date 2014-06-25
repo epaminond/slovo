@@ -55,6 +55,10 @@ Template.goalForm.events
     noParent = $('[name=parentGoalId]').val() == ''
     $('[name=pctOfParentGoal]').attr 'disabled', noParent
     $('[name=pctOfParentGoal]').val('') if noParent
+  'click .js-edit-goal': (event, obj)->
+    goal  = Goals.findOne($(event.currentTarget).attr('id'))
+    modal = UI.renderWithData(Template.goalModalForm, {action: 'update', goal: goal})
+    $(modal.render().toHTML()).modal('show')
 
 AutoForm.hooks
   goalForm:
