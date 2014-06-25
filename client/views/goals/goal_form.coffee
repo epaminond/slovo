@@ -11,55 +11,55 @@ Template.goalForm.helpers
   blockPosition: (parentGoalId)->
     $parentGoalBlock = $("##{parentGoalId}")
     if $parentGoalBlock.length > 0
-      sideIntendence = Template.goalForm.getCssInEms($parentGoalBlock, 'right') + 10
+      sideIndent = Template.goalForm.getCssInEms($parentGoalBlock, 'right') + 10
     else
-      sideIntendence = 0
-
+      sideIndent = 0
     connections = jsPlumb.getConnections(source: parentGoalId)
     topSiblings = connections.map (element) ->
       Template.goalForm.getCssInEms $(element.target), 'top'
     topSiblings = topSiblings.filter (el)-> !isNaN(el)
     highestTop  = if topSiblings.length > 0 then Math.max.apply(Math, topSiblings) else 0
-    topIntendence = highestTop + 3
+    topIndent = highestTop + 3
+    { right: "#{sideIndent}em", top: "#{topIndent}em" }
 
-    { right: "#{sideIntendence}em", top: "#{topIntendence}em" }
+Template.goalForm.rendered = ->
+  AutoForm.resetForm 'goalForm'
 
-  rendered: (event)->
-    AutoForm.resetForm 'goalForm'
+  endGoal = @data.goal
+  jsPlumb.ready ->
+    jsPlumb.Defaults =
+      Connector: ["Bezier", curviness: 20]
+      PaintStyle:
+        strokeStyle: "gray"
+        lineWidth: 2
+      EndpointStyle:
+        fillStyle: "gray"
+        radius: 4
+      HoverPaintStyle:
+        strokeStyle: "#ec9f2e"
+      EndpointHoverStyle:
+        fillStyle: "#ec9f2e"
+      Container: "goal-tree"
 
-    jsPlumb.ready ->
-      jsPlumb.Defaults =
-        Connector: ["Bezier", curviness: 30]
-        PaintStyle:
-          strokeStyle: "gray"
-          lineWidth: 2
-        EndpointStyle:
-          fillStyle: "gray"
-        HoverPaintStyle:
-          strokeStyle: "#ec9f2e"
-        EndpointHoverStyle:
-          fillStyle: "#ec9f2e"
-        Container: "goal-tree"
+    jsPlumb.doWhileSuspended ->
+      for goal in Goals.find({$or: [{_id: endGoal._id}, {parentGoalId: endGoal._id}]}).fetch()
+        $block = $("<div class=\"block panel panel-default\" id=\"#{goal._id}\"></div>")
+        $block.html("<div class=\"col-md-12\">#{goal.title}</div>")
+        $block.css Template.goalForm.blockPosition(goal.parentGoalId)
+        $('#goal-tree').append $block
 
-      jsPlumb.doWhileSuspended ->
-        for goal in Goals.find().fetch()
-          $block = $("<div class=\"block panel panel-default\" id=\"#{goal._id}\"></div>")
-          $block.html("<div class=\"col-md-12\">#{goal.title}</div>")
-          $block.css Template.goalForm.blockPosition(goal.parentGoalId)
-          $('#goal-tree').append $block
+        jsPlumb.addEndpoint $block,
+          uuid: "#{$block.attr("id")}-left"
+          anchor: "Left"
+          maxConnections: -1
 
+        if goal.parentGoalId?
           jsPlumb.addEndpoint $block,
-            uuid: "#{$block.attr("id")}-left"
-            anchor: "Left"
+            uuid: "#{$block.attr("id")}-right"
+            anchor: "Right"
             maxConnections: -1
-
-          if goal.parentGoalId?
-            jsPlumb.addEndpoint $block,
-              uuid: "#{$block.attr("id")}-right"
-              anchor: "Right"
-              maxConnections: -1
-            jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
-    return
+          jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
+  return
 
 Template.goalForm.events
   'change [name=pctCompleted]': (event)-> $('#js-success-bar').width("#{event.target.value}%")
