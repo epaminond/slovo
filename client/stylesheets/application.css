@@ -1,8 +1,14 @@
 body    { padding: 20px 0 20px; }
 .navbar { margin-bottom: 20px; }
 
+.truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /** BLOCK DIAGRAM **/
-.block-diagram        { position: relative; }
-.block                { text-align:center; position:absolute; }
-.block-diagram .block { line-height:2em; }
-._jsPlumb_endpoint    { cursor:pointer; }
+.block-diagram { position: relative; }
+.goal-block { position: absolute; }
+.goal-block .goal-title { width: 10em; }
+._jsPlumb_endpoint { cursor: pointer; }

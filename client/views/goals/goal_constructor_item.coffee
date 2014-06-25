@@ -3,13 +3,16 @@ Template.goalConstructorItem.helpers
   position: (parentGoalId)->
     $parentGoalBlock = $("##{parentGoalId}")
     if $parentGoalBlock.length > 0
-      sideIndent = Template.goalConstructorItem.getCssInEms($parentGoalBlock, 'right') + 10
+      sideIndent = Template.goalConstructorItem.getCssInEms($parentGoalBlock, 'right') + 16
     else
       sideIndent = 0
-    connections = jsPlumb.getConnections(source: parentGoalId)
-    topSiblings = connections.map (element) ->
-      Template.goalConstructorItem.getCssInEms $(element.target), 'top'
-    topSiblings = topSiblings.filter (el)-> !isNaN(el)
-    highestTop  = if topSiblings.length > 0 then Math.max.apply(Math, topSiblings) else 0
-    topIndent = highestTop + 3
-    "right: #{sideIndent}em; top: #{topIndent}em"
+    topIndents = jsPlumb.getConnections(source: parentGoalId).
+      map((element) -> Template.goalConstructorItem.getCssInEms $(element.target), 'top').
+      filter((element)-> !isNaN element)
+    highestTop  = if topIndents.length > 0 then Math.max.apply(Math, topIndents) else 0
+    topIndent = highestTop + 4
+    position = "right: #{sideIndent}em; top: #{topIndent}em"
+    while $.inArray(position, $('.goal-block').map((i, goalBlock)-> $(goalBlock).attr('style'))) > 0
+      topIndent += 4
+      position = "right: #{sideIndent}em; top: #{topIndent}em"
+    position

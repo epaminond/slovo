@@ -1,3 +1,4 @@
 template(name='goalConstructorItem')
-  .block.panel.panel-default(id="{{_id}}" style="{{position parentGoalId}}")
-    .col-md-12 {{title}}
+  .goal-block.panel.panel-default(id="{{_id}}" style="{{position parentGoalId}}")
+    .panel-body
+      .pull-left.goal-title.truncate=title
