@@ -26,8 +26,7 @@ Template.goalForm.helpers
 Template.goalForm.rendered = ->
   AutoForm.resetForm 'goalForm'
 
-  endGoal = @data.goal
-  jsPlumb.ready ->
+  jsPlumb.ready =>
     jsPlumb.Defaults =
       Connector:          ["Bezier", curviness: 20]
       Container:          "goal-tree"
@@ -37,7 +36,7 @@ Template.goalForm.rendered = ->
       EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
     jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
-    jsPlumb.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(endGoal)
+    jsPlumb.doWhileSuspended => Template.goalForm.displayGoalTreeRecursive(@data.goal)
   return
 
 Template.goalForm.events
