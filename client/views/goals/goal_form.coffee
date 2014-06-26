@@ -7,15 +7,12 @@ Template.goalForm.helpers
     block = UI.renderWithData Template.goalConstructorItem, goal
     UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
-    jsPlumb.addEndpoint block.dom.elements(),
-      uuid: "#{goal._id}-left"
-      anchor: "Left"
-      maxConnections: -1
+    jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-left"
+      anchor: "Left", maxConnections: -1
+
     if goal.parentGoalId?
-      jsPlumb.addEndpoint block.dom.elements(),
-        uuid: "#{goal._id}-right"
-        anchor: "Right"
-        maxConnections: -1
+      jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-right",
+        anchor: "Right", maxConnections: -1
       jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
 
     for childGoal in Goals.find(parentGoalId: goal._id).fetch()
