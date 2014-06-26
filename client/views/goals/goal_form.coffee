@@ -1,23 +1,19 @@
 Template.goalForm.helpers
   parentGoals: ->
     [{label: '', value: ''}].concat Goals.find(
-      $and: [
-        { _id: { $ne: @goal._id }},
-        { userId: Meteor.userId()}
-      ]
+      $and: [{ _id: { $ne: @goal._id } }, { userId: Meteor.userId() }]
     ).map (goal)-> {label: goal.title, value: goal._id}
   displayGoalTreeRecursive: (goal)->
-    $block = $ UI.renderWithData(Template.goalConstructorItem, goal).render().toHTML()
-    $('#goal-tree').append $block
+    block = UI.renderWithData(Template.goalConstructorItem, goal)
+    UI.insert block, document.getElementById('goal-tree')
 
-    jsPlumb.addEndpoint $block,
-      uuid: "#{$block.attr("id")}-left"
+    jsPlumb.addEndpoint block.dom.elements(),
+      uuid: "#{goal._id}-left"
       anchor: "Left"
       maxConnections: -1
-
     if goal.parentGoalId?
-      jsPlumb.addEndpoint $block,
-        uuid: "#{$block.attr("id")}-right"
+      jsPlumb.addEndpoint block.dom.elements(),
+        uuid: "#{goal._id}-right"
         anchor: "Right"
         maxConnections: -1
       jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
@@ -55,10 +51,6 @@ Template.goalForm.events
     noParent = $('[name=parentGoalId]').val() == ''
     $('[name=pctOfParentGoal]').attr 'disabled', noParent
     $('[name=pctOfParentGoal]').val('') if noParent
-  'click .js-edit-goal': (event, obj)->
-    goal  = Goals.findOne($(event.currentTarget).attr('id'))
-    modal = UI.renderWithData(Template.goalModalForm, {action: 'update', goal: goal})
-    $(modal.render().toHTML()).modal('show')
 
 AutoForm.hooks
   goalForm:
