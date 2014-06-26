@@ -3,23 +3,23 @@ Template.goalForm.helpers
     [{label: '', value: ''}].concat Goals.find(
       $and: [{ _id: { $ne: @goal._id } }, { userId: Meteor.userId() }]
     ).map (goal)-> {label: goal.title, value: goal._id}
-  displayGoalTreeRecursive: (goal)->
-    block = UI.renderWithData(Template.goalConstructorItem, goal)
+  displayGoalTreeRecursive: (instance, goal)->
+    block = UI.renderWithData Template.goalConstructorItem, goal: goal, instance: instance
     UI.insert block, document.getElementById('goal-tree')
 
-    jsPlumb.addEndpoint block.dom.elements(),
+    instance.addEndpoint block.dom.elements(),
       uuid: "#{goal._id}-left"
       anchor: "Left"
       maxConnections: -1
     if goal.parentGoalId?
-      jsPlumb.addEndpoint block.dom.elements(),
+      instance.addEndpoint block.dom.elements(),
         uuid: "#{goal._id}-right"
         anchor: "Right"
         maxConnections: -1
-      jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
+      instance.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
 
     for childGoal in Goals.find(parentGoalId: goal._id).fetch()
-      Template.goalForm.displayGoalTreeRecursive(childGoal)
+      Template.goalForm.displayGoalTreeRecursive(instance, childGoal)
 
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
 
@@ -28,7 +28,7 @@ Template.goalForm.rendered = ->
 
   endGoal = @data.goal
   jsPlumb.ready ->
-    jsPlumb.Defaults =
+    @instance = jsPlumb.getInstance
       Connector: ["Bezier", curviness: 20]
       PaintStyle:
         strokeStyle: "gray"
@@ -42,7 +42,7 @@ Template.goalForm.rendered = ->
         fillStyle: "#ec9f2e"
       Container: "goal-tree"
 
-    jsPlumb.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(endGoal)
+    @instance.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(@instance, endGoal)
   return
 
 Template.goalForm.events

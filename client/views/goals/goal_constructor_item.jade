@@ -1,7 +1,7 @@
 template(name='goalConstructorItem')
-  .goal-block.panel.panel-default(id=_id style="{{position parentGoalId}}")
-    +goalModalForm goal=this action='update'
+  .goal-block.panel.panel-default(id=goal._id style="{{position goal.parentGoalId}}")
+    +goalModalForm goal=goal instance=instance action='update'
     .panel-body
-      .pull-left.goal-title.truncate=title
-      a.pull-right.js-edit-goal(data-toggle="modal" data-target="##{_id}-modal")
+      .pull-left.goal-title.truncate=goal.title
+      a.pull-right.js-edit-goal(data-toggle="modal" data-target="##{goal._id}-modal")
         span.glyphicon.glyphicon-pencil
