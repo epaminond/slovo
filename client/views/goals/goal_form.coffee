@@ -29,18 +29,12 @@ Template.goalForm.rendered = ->
   endGoal = @data.goal
   jsPlumb.ready ->
     jsPlumb.Defaults =
-      Connector: ["Bezier", curviness: 20]
-      PaintStyle:
-        strokeStyle: "gray"
-        lineWidth: 2
-      EndpointStyle:
-        fillStyle: "gray"
-        radius: 4
-      HoverPaintStyle:
-        strokeStyle: "#ec9f2e"
-      EndpointHoverStyle:
-        fillStyle: "#ec9f2e"
-      Container: "goal-tree"
+      Connector:          ["Bezier", curviness: 20]
+      Container:          "goal-tree"
+      PaintStyle:         { strokeStyle: "gray", lineWidth: 2 }
+      EndpointStyle:      { fillStyle:   "gray", radius:    4 }
+      HoverPaintStyle:    { strokeStyle: "#ec9f2e" }
+      EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
     jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
     jsPlumb.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(endGoal)
@@ -57,8 +51,6 @@ AutoForm.hooks
   goalForm:
     before:
       insert: (doc, template)->
-        doc.userId    = Meteor.user()._id
-        doc.createdAt = moment().toDate()
-        doc
+        _(doc).extend userId: Meteor.user()._id, createdAt: moment().toDate()
     onSuccess: (operation, result, template)-> Router.go 'goals'
     onError: (operation, error, template)-> console.log error
