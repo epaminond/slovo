@@ -1,29 +1,25 @@
 Template.goalForm.helpers
   parentGoals: ->
     [{label: '', value: ''}].concat Goals.find(
-      $and: [
-        { _id: { $ne: @goal._id }},
-        { userId: Meteor.userId()}
-      ]
+      $and: [{ _id: { $ne: @goal._id } }, { userId: Meteor.userId() }]
     ).map (goal)-> {label: goal.title, value: goal._id}
-  displayGoalTreeRecursive: (goal)->
-    $block = $ UI.renderWithData(Template.goalConstructorItem, goal).render().toHTML()
-    $('#goal-tree').append $block
+  displayGoalTreeRecursive: (instance, goal)->
+    block = UI.renderWithData Template.goalConstructorItem, goal: goal, instance: instance
+    UI.insert block, document.getElementById('goal-tree')
 
-    jsPlumb.addEndpoint $block,
-      uuid: "#{$block.attr("id")}-left"
+    instance.addEndpoint block.dom.elements(),
+      uuid: "#{goal._id}-left"
       anchor: "Left"
       maxConnections: -1
-
     if goal.parentGoalId?
-      jsPlumb.addEndpoint $block,
-        uuid: "#{$block.attr("id")}-right"
+      instance.addEndpoint block.dom.elements(),
+        uuid: "#{goal._id}-right"
         anchor: "Right"
         maxConnections: -1
-      jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
+      instance.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
 
     for childGoal in Goals.find(parentGoalId: goal._id).fetch()
-      Template.goalForm.displayGoalTreeRecursive(childGoal)
+      Template.goalForm.displayGoalTreeRecursive(instance, childGoal)
 
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
 
@@ -32,7 +28,7 @@ Template.goalForm.rendered = ->
 
   endGoal = @data.goal
   jsPlumb.ready ->
-    jsPlumb.Defaults =
+    @instance = jsPlumb.getInstance
       Connector: ["Bezier", curviness: 20]
       PaintStyle:
         strokeStyle: "gray"
@@ -46,19 +42,15 @@ Template.goalForm.rendered = ->
         fillStyle: "#ec9f2e"
       Container: "goal-tree"
 
-    jsPlumb.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(endGoal)
+    @instance.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(@instance, endGoal)
   return
 
 Template.goalForm.events
-  'change [name=pctCompleted]': (event)-> $('#js-success-bar').width("#{event.target.value}%")
+  'change #endGoalPctCompleted': (event)-> $('#js-success-bar').width("#{event.target.value}%")
   'change [name=parentGoalId]': (event)->
     noParent = $('[name=parentGoalId]').val() == ''
     $('[name=pctOfParentGoal]').attr 'disabled', noParent
     $('[name=pctOfParentGoal]').val('') if noParent
-  'click .js-edit-goal': (event, obj)->
-    goal  = Goals.findOne($(event.currentTarget).attr('id'))
-    modal = UI.renderWithData(Template.goalModalForm, {action: 'update', goal: goal})
-    $(modal.render().toHTML()).modal('show')
 
 AutoForm.hooks
   goalForm:

@@ -1,42 +1,31 @@
 template(name='goalModalForm')
-  .modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="{{goal._id}}-modal")
     .modal-dialog
       .modal-content
-        .modal-header
-          button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
-          h4.modal-title Edit goal
-        .modal-body
-          +autoForm(collection="Goals" id="goalForm" type=action template="bootstrap3-horizontal" role="form" doc=goal)
-            fieldset
-              +afQuickField template="bootstrap3-horizontal" label-class="col-sm-2" input-col-class="col-sm-10" name='title'
-              +afQuickField template="bootstrap3-horizontal" label-class="col-sm-2" input-col-class="col-sm-10" name='description'
-              //- .form-group
-              //-   .col-sm-2
-              //-     +afFieldLabel name='parentGoalId'
-              //-   .col-sm-7
-              //-     +afFieldInput name='parentGoalId' options=parentGoals
-              //-     span.help-block {{afFieldMessage name='parentGoalId'}}
-              //-   .col-sm-3
-              //-     .input-group
-              //-       +afFieldInput name='pctOfParentGoal' disabled=pctOfParentGoalDisabled
-              //-       span.input-group-addon %
-              //-     span.help-block {{afFieldMessage name='pctOfParentGoal'}}
+        +autoForm(collection="Goals" id="goalModalForm" type=action role="form" doc=goal)
+          .modal-header
+            button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+            h4.modal-title Edit goal
+          .modal-body
+            fieldset.form-horizontal
+              +afQuickField template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9" name='title'
+              +afQuickField template="bootstrap3-horizontal" label-class="col-sm-3" input-col-class="col-sm-9" name='description'
               .form-group
-                .col-sm-2
-                  +afFieldLabel name='pctCompleted'
+                label.col-sm-3.control-label Makes
+                .col-sm-3
+                  .input-group
+                    +afFieldInput name='pctOfParentGoal' disabled=pctOfParentGoalDisabled
+                    span.input-group-addon %
+                  span.help-block {{afFieldMessage name='pctOfParentGoal'}}
+                .col-sm-6
+                  p.form-control-static of {{parentGoal.title}}
+              .form-group
+                +afFieldLabel name='pctCompleted' class="col-sm-3 control-label"
                 .col-sm-3
                   .input-group
                     +afFieldInput name='pctCompleted'
                     span.input-group-addon %
                   span.help-block {{afFieldMessage name='pctCompleted'}}
-              //- .form-group
-              //-   .col-sm-offset-2.col-sm-10
-              //-     .progress.progress-striped.active
-              //-       .progress-bar.progress-bar-success#js-success-bar(role="progressbar"
-              //-         aria-valuemin="0" aria-valuemax="100" style="width: {{goal.pctCompleted}}%")
-              //- .form-group
-              //-   .col-sm-offset-2.col-sm-10
-              //-     input.btn.btn-primary(type='submit' value='Submit')
-        .modal-footer
-          button.btn.btn-default(type="button" data-dismiss="modal") Close
-          button.btn.btn-primary(type="button") Save changes
+          .modal-footer
+            button.btn.btn-default(type="button" data-dismiss="modal") Cancel
+            input.btn.btn-primary(type='submit' value='Submit')
