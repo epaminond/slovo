@@ -46,7 +46,7 @@ Template.goalForm.rendered = ->
   return
 
 Template.goalForm.events
-  'change [name=pctCompleted]': (event)-> $('#js-success-bar').width("#{event.target.value}%")
+  'change #endGoalPctCompleted': (event)-> $('#js-success-bar').width("#{event.target.value}%")
   'change [name=parentGoalId]': (event)->
     noParent = $('[name=parentGoalId]').val() == ''
     $('[name=pctOfParentGoal]').attr 'disabled', noParent
