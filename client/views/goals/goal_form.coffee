@@ -3,23 +3,23 @@ Template.goalForm.helpers
     [{label: '', value: ''}].concat Goals.find(
       $and: [{ _id: { $ne: @goal._id } }, { userId: Meteor.userId() }]
     ).map (goal)-> {label: goal.title, value: goal._id}
-  displayGoalTreeRecursive: (instance, goal)->
-    block = UI.renderWithData Template.goalConstructorItem, goal: goal, instance: instance
-    UI.insert block, document.getElementById('goal-tree')
+  displayGoalTreeRecursive: (goal)->
+    block = UI.renderWithData Template.goalConstructorItem, goal
+    UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
-    instance.addEndpoint block.dom.elements(),
+    jsPlumb.addEndpoint block.dom.elements(),
       uuid: "#{goal._id}-left"
       anchor: "Left"
       maxConnections: -1
     if goal.parentGoalId?
-      instance.addEndpoint block.dom.elements(),
+      jsPlumb.addEndpoint block.dom.elements(),
         uuid: "#{goal._id}-right"
         anchor: "Right"
         maxConnections: -1
-      instance.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
+      jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
 
     for childGoal in Goals.find(parentGoalId: goal._id).fetch()
-      Template.goalForm.displayGoalTreeRecursive(instance, childGoal)
+      Template.goalForm.displayGoalTreeRecursive childGoal
 
   pctOfParentGoalDisabled: -> !@goal.parentGoalId? || @goal.parentGoalId == ''
 
@@ -28,7 +28,7 @@ Template.goalForm.rendered = ->
 
   endGoal = @data.goal
   jsPlumb.ready ->
-    @instance = jsPlumb.getInstance
+    jsPlumb.Defaults =
       Connector: ["Bezier", curviness: 20]
       PaintStyle:
         strokeStyle: "gray"
@@ -41,8 +41,9 @@ Template.goalForm.rendered = ->
       EndpointHoverStyle:
         fillStyle: "#ec9f2e"
       Container: "goal-tree"
+    jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
-    @instance.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(@instance, endGoal)
+    jsPlumb.doWhileSuspended -> Template.goalForm.displayGoalTreeRecursive(endGoal)
   return
 
 Template.goalForm.events

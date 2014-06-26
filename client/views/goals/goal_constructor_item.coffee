@@ -6,7 +6,7 @@ Template.goalConstructorItem.helpers
       sideIndent = Template.goalConstructorItem.getCssInEms($parentGoalBlock, 'right') + 16
     else
       sideIndent = 0
-    topIndents = instance.getConnections(source: parentGoalId).
+    topIndents = jsPlumb.getConnections(source: parentGoalId).
       map((element) -> Template.goalConstructorItem.getCssInEms $(element.target), 'top').
       filter((element)-> !isNaN element)
     highestTop  = if topIndents.length > 0 then Math.max.apply(Math, topIndents) else 0
