@@ -41,6 +41,8 @@ Template.goalConstructor.helpers
 Template.goalConstructor.rendered = ->
   AutoForm.resetForm 'goalModalForm'
 
+  $(window).bind 'resize', -> jsPlumb.repaintEverything()
+
   Deps.autorun =>
     $('.goal-block').each (i, block) -> jsPlumb.remove(block)
     jsPlumb.ready =>
