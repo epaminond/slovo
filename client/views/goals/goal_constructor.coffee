@@ -32,8 +32,9 @@ Template.goalConstructor.helpers
       Goals.update(goal.parentGoalId, $set: { mainChildId: goal._id }) unless inMainFlow
 
   displayGoalTreeRecursive: (goal)->
-    @displayGoal(goal)
-    for childGoal in Goals.find(parentGoalId: goal._id).fetch()
+    @displayGoal(goal) if goal._id?
+    childGoals = Goals.find $and: [ {parentGoalId: {$exists: true}}, {parentGoalId: goal._id} ]
+    for childGoal in childGoals.fetch()
       @displayGoalTreeRecursive childGoal
   modalParams: -> Session.get('modalParams') || goal: {}
 
