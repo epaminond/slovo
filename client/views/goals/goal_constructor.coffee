@@ -10,7 +10,7 @@ Template.goalConstructor.helpers
     UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
     inMainFlow = @inMainFlow(goal)
-    strokeStyle = if @inMainFlow(goal) then "#d6e9c6" else "gray"
+    strokeStyle = if @inMainFlow(goal) then "#428bca" else "gray"
 
     endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Left",
       anchor: "Left", maxConnections: -1, paintStyle: { fillStyle: strokeStyle }
@@ -50,8 +50,8 @@ Template.goalConstructor.rendered = ->
         Container:          "goal-tree"
         PaintStyle:         { strokeStyle: "gray", lineWidth: 3 }
         EndpointStyle:      { fillStyle:   "gray", radius:    7 }
-        HoverPaintStyle:    { strokeStyle: "#d6e9c6" }
-        EndpointHoverStyle: { fillStyle:   "#d6e9c6" }
+        HoverPaintStyle:    { strokeStyle: "#428bca" }
+        EndpointHoverStyle: { fillStyle:   "#428bca" }
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
       jsPlumb.doWhileSuspended =>

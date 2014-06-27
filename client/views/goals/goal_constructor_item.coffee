@@ -1,8 +1,8 @@
 Template.goalConstructorItem.helpers
   mainGoalClass: ->
     parentGoal = Goals.findOne @parentGoalId
-    if !parentGoal? || parentGoal.mainChildId == @_id
-      'panel-success'
+    if Template.goalConstructor.inMainFlow(@)
+      'panel-primary'
     else
       'panel-default'
   position: (parentGoalId)->
