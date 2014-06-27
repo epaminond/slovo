@@ -1,5 +1,6 @@
 Template.goalModalForm.helpers
-  parentGoal: -> Goals.findOne(@goal.parentGoalId)
+  parentGoal:     -> Goals.findOne(@goal.parentGoalId)
+  disabledDelete: -> 'disabled' unless @goal._id?
 
 AutoForm.hooks
   goalModalForm:

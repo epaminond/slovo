@@ -36,6 +36,10 @@
     createdAt:
       type: Date
       label: "Date, goal was created"
+    mainChildId:
+      type: String
+      label: "Main child goal"
+      optional: true
 
 Goals.allow
 
@@ -52,5 +56,5 @@ Goals.allow
 
 Goals.deny
   update: (userId, goal, fieldNames)->
-    _(_(fieldNames).without 'description', 'title',
+    _(_(fieldNames).without 'description', 'title', 'mainChildId'
       'parentGoalId', 'pctCompleted', 'pctOfParentGoal').any()

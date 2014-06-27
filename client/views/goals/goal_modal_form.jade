@@ -29,6 +29,6 @@ template(name='goalModalForm')
                   span.help-block {{afFieldMessage name='pctCompleted'}}
           .modal-footer
             +autoForm(id="goalModalForm" collection="Goals" type='remove' role="form" doc=goal style="display: inline;")
-              input.btn.btn-danger.pull-left(type="submit" value="Delete")
+              input.btn.btn-danger.pull-left(type="submit" value="Delete" class="{{disabledDelete}}")
             button.btn.btn-default(type="button" data-dismiss="modal") Cancel
             input.btn.btn-primary(type="submit" value="Save")

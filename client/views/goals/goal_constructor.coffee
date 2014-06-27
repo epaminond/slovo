@@ -3,9 +3,9 @@ Template.goalConstructor.helpers
     block = UI.renderWithData Template.goalConstructorItem, goal
     UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
-    ep = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-left",
+    endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-left",
       anchor: "Left", maxConnections: -1
-    ep.bind "click", (endpoint)->
+    endpoint.bind "click", (endpoint)->
       Session.set 'modalParams',
         goal:   { parentGoalId: endpoint.elementId }
         action: 'insert'
@@ -14,7 +14,10 @@ Template.goalConstructor.helpers
     if goal.parentGoalId?
       jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-right",
         anchor: "Right", maxConnections: 1
-      jsPlumb.connect uuids: ["#{goal.parentGoalId}-left", "#{goal._id}-right"]
+      connection = jsPlumb.connect uuids: ["#{goal.parentGoalId}-left",
+        "#{goal._id}-right"]
+      connection.bind "click", (conn)->
+        console.log("you clicked on ", conn);
 
   displayGoalTreeRecursive: (goal)->
     @displayGoal(goal)
@@ -31,8 +34,8 @@ Template.goalConstructor.rendered = ->
       jsPlumb.Defaults =
         Connector:          ["Bezier", curviness: 20]
         Container:          "goal-tree"
-        PaintStyle:         { strokeStyle: "gray", lineWidth: 2 }
-        EndpointStyle:      { fillStyle:   "gray", radius:    6 }
+        PaintStyle:         { strokeStyle: "gray", lineWidth: 3 }
+        EndpointStyle:      { fillStyle:   "gray", radius:    7 }
         HoverPaintStyle:    { strokeStyle: "#ec9f2e" }
         EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
