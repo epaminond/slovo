@@ -16,3 +16,8 @@ Template.goalConstructorItem.helpers
     while _($(".goal-block[style=\"#{position}\"]")).any()
       position = "right: #{sideIndent}em; top: #{topIndent += 4}em"
     position
+
+Template.goalConstructorItem.events
+  'click .js-edit-goal': (event, template) ->
+    Session.set 'modalParams', goal: Goals.findOne(template.data._id), action: 'update'
+    $('#goal-form-modal').modal('show')

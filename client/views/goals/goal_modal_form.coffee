@@ -5,8 +5,8 @@ AutoForm.hooks
   goalModalForm:
     before:
       insert: (doc, template)->
-        doc.userId    = Meteor.user()._id
-        doc.createdAt = moment().toDate()
-        doc
-    onSuccess: (operation, result, template)-> $("##{template.data.doc._id}-modal").modal('hide')
+        _(doc).extend userId: Meteor.user()._id, createdAt: moment().toDate()
+    onSuccess: (operation, result, template)->
+      Template.goalConstructor.displayGoal(Goals.findOne(result))
+      $("#goal-form-modal").modal('hide')
     onError: (operation, error, template)-> console.log error
