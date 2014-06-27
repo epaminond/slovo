@@ -52,5 +52,5 @@ Goals.allow
 
 Goals.deny
   update: (userId, goal, fieldNames)->
-    _.without(fieldNames, 'description', 'title',
+    _(_(fieldNames).without 'description', 'title',
       'parentGoalId', 'pctCompleted', 'pctOfParentGoal').any()

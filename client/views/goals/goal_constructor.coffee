@@ -25,16 +25,18 @@ Template.goalConstructor.helpers
 Template.goalConstructor.rendered = ->
   AutoForm.resetForm 'goalModalForm'
 
-  jsPlumb.ready =>
-    jsPlumb.Defaults =
-      Connector:          ["Bezier", curviness: 20]
-      Container:          "goal-tree"
-      PaintStyle:         { strokeStyle: "gray", lineWidth: 2 }
-      EndpointStyle:      { fillStyle:   "gray", radius:    6 }
-      HoverPaintStyle:    { strokeStyle: "#ec9f2e" }
-      EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
-    jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
+  Deps.autorun =>
+    $('.goal-block').each (i, block) -> jsPlumb.remove(block)
+    jsPlumb.ready =>
+      jsPlumb.Defaults =
+        Connector:          ["Bezier", curviness: 20]
+        Container:          "goal-tree"
+        PaintStyle:         { strokeStyle: "gray", lineWidth: 2 }
+        EndpointStyle:      { fillStyle:   "gray", radius:    6 }
+        HoverPaintStyle:    { strokeStyle: "#ec9f2e" }
+        EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
+      jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
-    jsPlumb.doWhileSuspended =>
-      Template.goalConstructor.displayGoalTreeRecursive(@data.goal)
-      setTimeout (-> jsPlumb.repaintEverything()), 1
+      jsPlumb.doWhileSuspended =>
+        Template.goalConstructor.displayGoalTreeRecursive(@data.goal)
+        setTimeout (-> jsPlumb.repaintEverything()), 1
