@@ -1,4 +1,10 @@
 Template.goalConstructorItem.helpers
+  mainGoalClass: ->
+    parentGoal = Goals.findOne @parentGoalId
+    if !parentGoal? || parentGoal.mainChildId == @_id
+      'panel-success'
+    else
+      'panel-default'
   position: (parentGoalId)->
     getCssInEms = ($obj, property)->
       parseFloat($obj.css property) / parseFloat($obj.css "font-size")

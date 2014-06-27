@@ -10,7 +10,7 @@ GoalsController = RouteController.extend
 @GoalsListController = GoalsController.extend
   template: "goalsList"
   data: ->
-    goals: Goals.find userId: Meteor.userId()
+    goals: Goals.find $and: [{parentGoalId: {$exists: false}}, {userId: Meteor.userId()}]
 
 @GoalEditController = GoalsController.extend
   template: "goalForm"

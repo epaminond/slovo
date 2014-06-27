@@ -1,5 +1,5 @@
 template(name='goalConstructorItem')
-  .goal-block.panel.panel-default(id=_id style="{{position parentGoalId}}")
+  .goal-block.panel(id=_id style="{{position parentGoalId}}" class="{{mainGoalClass}}")
     .panel-body
       .pull-left.goal-title.truncate=title
       a.pull-right.js-edit-goal

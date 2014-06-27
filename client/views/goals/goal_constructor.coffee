@@ -1,23 +1,35 @@
 Template.goalConstructor.helpers
+  inMainFlow: (goal)->
+    parentGoal = Goals.findOne(goal.parentGoalId)
+    if parentGoal?
+      parentGoal.mainChildId == goal._id && @inMainFlow(parentGoal)
+    else
+      true
   displayGoal: (goal)->
     block = UI.renderWithData Template.goalConstructorItem, goal
     UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
-    endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-left",
-      anchor: "Left", maxConnections: -1
+    inMainFlow = @inMainFlow(goal)
+    strokeStyle = if @inMainFlow(goal) then "#d6e9c6" else "gray"
+
+    endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Left",
+      anchor: "Left", maxConnections: -1, paintStyle: { fillStyle: strokeStyle }
     endpoint.bind "click", (endpoint)->
       Session.set 'modalParams',
         goal:   { parentGoalId: endpoint.elementId }
         action: 'insert'
       $('#goal-form-modal').modal('show')
 
-    if goal.parentGoalId?
-      jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-right",
-        anchor: "Right", maxConnections: 1
-      connection = jsPlumb.connect uuids: ["#{goal.parentGoalId}-left",
-        "#{goal._id}-right"]
-      connection.bind "click", (conn)->
-        console.log("you clicked on ", conn);
+    return unless goal.parentGoalId?
+
+    jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Right",
+      anchor: "Right", maxConnections: 1, paintStyle: { fillStyle: strokeStyle }
+
+    connection = jsPlumb.connect
+      uuids: ["#{goal.parentGoalId}-Left", "#{goal._id}-Right"]
+      paintStyle:    { strokeStyle: strokeStyle, lineWidth: 3 }
+    connection.bind "click", (conn)->
+      Goals.update(goal.parentGoalId, $set: { mainChildId: goal._id }) unless inMainFlow
 
   displayGoalTreeRecursive: (goal)->
     @displayGoal(goal)
@@ -31,13 +43,14 @@ Template.goalConstructor.rendered = ->
   Deps.autorun =>
     $('.goal-block').each (i, block) -> jsPlumb.remove(block)
     jsPlumb.ready =>
+      jsPlumb.reset()
       jsPlumb.Defaults =
         Connector:          ["Bezier", curviness: 20]
         Container:          "goal-tree"
         PaintStyle:         { strokeStyle: "gray", lineWidth: 3 }
         EndpointStyle:      { fillStyle:   "gray", radius:    7 }
-        HoverPaintStyle:    { strokeStyle: "#ec9f2e" }
-        EndpointHoverStyle: { fillStyle:   "#ec9f2e" }
+        HoverPaintStyle:    { strokeStyle: "#d6e9c6" }
+        EndpointHoverStyle: { fillStyle:   "#d6e9c6" }
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
       jsPlumb.doWhileSuspended =>

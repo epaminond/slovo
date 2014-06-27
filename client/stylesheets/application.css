@@ -8,3 +8,4 @@ body      { padding: 20px 0 20px; }
 .goal-block             { position: absolute; }
 .goal-block .goal-title { width: 10em; }
 ._jsPlumb_endpoint      { cursor: pointer; }
+._jsPlumb_connector     { cursor: pointer; }
