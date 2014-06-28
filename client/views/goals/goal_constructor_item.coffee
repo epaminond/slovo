@@ -15,7 +15,7 @@ Template.goalConstructorItem.helpers
     topIndents = jsPlumb.getConnections(source: parentGoalId).
       map((element) -> getCssInEms $(element.target), 'top').
       filter((element)-> !isNaN element)
-    highestTop  = if _(topIndents).any() then Math.max.apply(Math, topIndents) else 0
+    highestTop = if _(topIndents).any() then Math.max.apply(Math, topIndents) else 0
     topIndent = highestTop + 4
 
     position = "right: #{sideIndent}em; top: #{topIndent}em"
@@ -24,6 +24,6 @@ Template.goalConstructorItem.helpers
     position
 
 Template.goalConstructorItem.events
-  'click .js-edit-goal': (event, template) ->
+  'click .goal-block': (event, template) ->
     Session.set 'modalParams', goal: Goals.findOne(template.data._id), action: 'update'
-    $('#goal-form-modal').modal('show')
+    $('#goal-modal-form').modal('show')

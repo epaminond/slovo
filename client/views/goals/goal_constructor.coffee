@@ -18,12 +18,12 @@ Template.goalConstructor.helpers
       Session.set 'modalParams',
         goal:   { parentGoalId: endpoint.elementId }
         action: 'insert'
-      $('#goal-form-modal').modal('show')
+      $('#goal-modal-form').modal('show')
 
     return unless goal.parentGoalId?
 
     jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Right",
-      anchor: "Right", maxConnections: 1, paintStyle: { fillStyle: strokeStyle }
+      anchor: "Right", maxConnections: 1, paintStyle: { fillStyle: strokeStyle, radius: 2 }
 
     connection = jsPlumb.connect
       uuids: ["#{goal.parentGoalId}-Left", "#{goal._id}-Right"]

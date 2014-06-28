@@ -5,7 +5,7 @@ body      { padding: 20px 0 20px; }
 
 /** BLOCK DIAGRAM **/
 .block-diagram          { position: relative; }
-.goal-block             { position: absolute; }
+.goal-block             { position: absolute; cursor: pointer; }
 .goal-block .goal-title { width: 10em; }
 ._jsPlumb_endpoint      { cursor: pointer; }
 ._jsPlumb_connector     { cursor: pointer; }

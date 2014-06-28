@@ -6,6 +6,9 @@ Template.goalModalForm.helpers
       Template.goalModalForm.removeSubtree(el)
       Goals.remove el._id
 
+Template.goalModalForm.events
+  'hidden.bs.modal #goal-modal-form': (e)-> delete Session.keys['modalParams']
+
 AutoForm.hooks
   goalModalForm:
     before:
@@ -15,5 +18,5 @@ AutoForm.hooks
       remove: (error, result, template)->
         Template.goalModalForm.removeSubtree template.data.doc
     onSuccess: (operation, result, template)->
-      $("#goal-form-modal").modal('hide')
+      $("#goal-modal-form").modal('hide')
     onError: (operation, error, template)-> console.log error
