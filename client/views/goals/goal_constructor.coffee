@@ -57,5 +57,5 @@ Template.goalConstructor.rendered = ->
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
       jsPlumb.doWhileSuspended =>
-        Template.goalConstructor.displayGoalTreeRecursive(@data.goal)
+        Template.goalConstructor.displayGoalTreeRecursive Goals.findOne(@data.goal._id)
         setTimeout (-> jsPlumb.repaintEverything()), 1
