@@ -6,14 +6,14 @@ Template.goalConstructorItem.helpers
     else
       'panel-default'
   position: (parentGoalId)->
-    getCssInEms = ($obj, property)->
+    getCssPropInEms = ($obj, property)->
       parseFloat($obj.css property) / parseFloat($obj.css "font-size")
     $block = $("##{parentGoalId}")
 
-    sideIndent = if _($block).any() then getCssInEms($block, 'right') + 16 else 0
+    sideIndent = if _($block).any() then getCssPropInEms($block, 'right') + 16 else 0
 
     topIndents = jsPlumb.getConnections(source: parentGoalId).
-      map((element) -> getCssInEms $(element.target), 'top').
+      map((element) -> getCssPropInEms $(element.target), 'top').
       filter((element)-> !isNaN element)
     highestTop = if _(topIndents).any() then Math.max.apply(Math, topIndents) else 0
     topIndent = highestTop + 4
