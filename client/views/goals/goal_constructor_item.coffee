@@ -11,7 +11,7 @@ Template.goalConstructorItem.helpers
       if _(subConnections).any() then _(subConnections).max() + 1 else 1
   getSubtreeMaxWidthRec: (ids)->
     subIds = _(Goals.find(parentGoalId: {$in: ids}).fetch()).pluck('_id')
-    if _(subIds).any() then _.max [subIds.length, Template.goalConstructorItem.getSubtreeMaxWidthRec(subIds)] else 0
+    if _(subIds).any() then subIds.length + Template.goalConstructorItem.getSubtreeMaxWidthRec(subIds) else 0
   position: (parentGoalId)->
     getCssPropInEms = ($obj, property)->
       parseFloat($obj.css property) / parseFloat($obj.css "font-size")
