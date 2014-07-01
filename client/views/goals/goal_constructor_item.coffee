@@ -17,19 +17,20 @@ Template.goalConstructorItem.helpers
       parseFloat($obj.css property) / parseFloat($obj.css "font-size")
     $block = $("##{parentGoalId}")
     sideIndent = if _($block).any() then getCssPropInEms($block, 'right') + 15 else 0
-
     usedSpace = $(".goal-block[style*=\"right: #{sideIndent}em\"]").map (i, e)->
       res = getCssPropInEms($(e), 'top') + getCssPropInEms($(e), 'height')
       if _.isNaN(res) then 0 else res
     usedSpace = if _(usedSpace).any() then _.max(usedSpace) else 0
-    "right: #{sideIndent}em; top: #{usedSpace}em"
+    parentTopIndent = getCssPropInEms($block, 'top')
+    topIndent = _.max [usedSpace, parentTopIndent]
+    topIndent = 0 if _.isNaN topIndent
+    "right: #{sideIndent}em; top: #{topIndent}em"
   blockStyle: (goal)->
-    template = Template.goalConstructorItem
-    position = template.position goal.parentGoalId
-    height   = template.getSubtreeMaxWidthRec([goal._id]) * 4
+    position = Template.goalConstructorItem.position goal.parentGoalId
+    height   = Template.goalConstructorItem.getSubtreeMaxWidthRec([goal._id]) * 4
     "#{position}; height: #{height}em"
 
 Template.goalConstructorItem.events
-  'click .goal-block': (event, template) ->
+  'click .goal-block .panel': (event, template) ->
     Session.set 'modalParams', goal: Goals.findOne(template.data._id), action: 'update'
     $('#goal-modal-form').modal('show')
