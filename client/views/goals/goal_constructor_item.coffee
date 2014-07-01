@@ -10,27 +10,33 @@ Template.goalConstructorItem.helpers
       subConnections = getSubtreeLengthRec(connection.targetId)
       if _(subConnections).any() then _(subConnections).max() + 1 else 1
   getSubtreeMaxWidthRec: (ids)->
-    subIds = _.chain(ids)
-      .map((id)-> _(jsPlumb.getConnections source: id).pluck 'targetId')
-      .flatten().value()
-    if _(subIds).any() then _.max [subIds.length, getSubtreeMaxWidthRec(subIds)] else 0
+    subIds = _(Goals.find(parentGoalId: {$in: ids}).fetch()).pluck('_id')
+    if _(subIds).any() then _.max [subIds.length, Template.goalConstructorItem.getSubtreeMaxWidthRec(subIds)] else 0
   position: (parentGoalId)->
     getCssPropInEms = ($obj, property)->
       parseFloat($obj.css property) / parseFloat($obj.css "font-size")
     $block = $("##{parentGoalId}")
+    sideIndent = if _($block).any() then getCssPropInEms($block, 'right') + 15 else 0
 
-    sideIndent = if _($block).any() then getCssPropInEms($block, 'right') + 16 else 0
-
-    topIndents = jsPlumb.getConnections(source: parentGoalId).
-      map((element) -> getCssPropInEms $(element.target), 'top').
-      filter((element)-> !isNaN element)
-    highestTop = if _(topIndents).any() then _(topIndents).max() else 0
-    topIndent = highestTop + 4
-
-    position = "right: #{sideIndent}em; top: #{topIndent}em"
-    while _($(".goal-block[style=\"#{position}\"]")).any()
-      position = "right: #{sideIndent}em; top: #{topIndent += 4}em"
-    position
+    usedSpace = $(".goal-block[style*=\"right: #{sideIndent}em\"]").map (i, e)->
+      res = getCssPropInEms($(e), 'top') + getCssPropInEms($(e), 'height')
+      if _.isNaN(res) then 0 else res
+    usedSpace = if _(usedSpace).any() then _.max(usedSpace) else 0
+    "right: #{sideIndent}em; top: #{usedSpace}em"
+  blockStyle: (goal)->
+    template = Template.goalConstructorItem
+    position = template.position goal.parentGoalId
+    height   = template.getSubtreeMaxWidthRec([goal._id]) * 4
+    "#{position}; height: #{height}em"
+  collide: (el1, el2)->
+    rect1 = el1.getBoundingClientRect()
+    rect2 = el2.getBoundingClientRect()
+    !(
+      rect1.top > rect2.bottom ||
+      rect1.right < rect2.left ||
+      rect1.bottom < rect2.top ||
+      rect1.left > rect2.right
+    );
 
 Template.goalConstructorItem.events
   'click .goal-block': (event, template) ->

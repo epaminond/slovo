@@ -1,5 +1,6 @@
 template(name='goalConstructorItem')
-  .goal-block(id=_id style="{{position parentGoalId}}")
-    .panel(class="{{mainGoalClass}}" style="margin-bottom: 0px;")
-      .panel-body
-        .goal-title.truncate=title
+  .goal-block(id=_id style="{{blockStyle this}}")
+    .panel-wrapper
+      .panel.goal-block-content(class="{{mainGoalClass}}")
+        .panel-body
+          .goal-title.truncate=title
