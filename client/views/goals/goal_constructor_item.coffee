@@ -32,6 +32,6 @@ Template.goalConstructorItem.helpers
     "#{position goal.parentGoalId}; height: #{getSubtreeMaxWidth([goal._id]) * 4}em"
 
 Template.goalConstructorItem.events
-  'click .goal-block .panel': (event, template) ->
+  'click .goal-block .goal-block-content': (event, template) ->
     Session.set 'modalParams', goal: Goals.findOne(template.data._id), action: 'update'
     $('#goal-modal-form').modal('show')

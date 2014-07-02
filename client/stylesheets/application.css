@@ -4,11 +4,10 @@ body      { padding: 20px 0 20px; }
 .truncate { text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 
 /** BLOCK DIAGRAM **/
-.block-diagram          { position: relative; }
-.goal-block             { position: absolute; display: table; }
-.goal-block .panel      { cursor: pointer; }
-.goal-block .goal-title { width: 10em; }
-.panel-wrapper          { display: table-cell; vertical-align: middle; }
-.goal-block-content     { margin: 3px 0 0 3px }
-._jsPlumb_endpoint      { cursor: pointer; }
-._jsPlumb_connector     { cursor: pointer; }
+.block-diagram      { position: relative; }
+.goal-block         { position: absolute; display: table; }
+.goal-title         { width: 10em; }
+.panel-wrapper      { display: table-cell; vertical-align: middle; }
+.goal-block-content { cursor: pointer; margin: 3px 0 0 3px; }
+._jsPlumb_endpoint  { cursor: pointer; }
+._jsPlumb_connector { cursor: pointer; }
