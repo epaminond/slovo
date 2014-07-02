@@ -16,19 +16,15 @@ Template.goalConstructorItem.helpers
       $block = $("##{parentGoalId}")
       sideIndent = if _($block).any() then getCssPropInEms($block, 'right') + 15 else 0
       usedSpace = $(".goal-block[style*=\"right: #{sideIndent}em\"]").map (i, e)->
-        res = getCssPropInEms($(e), 'top') + getCssPropInEms($(e), 'height')
-        if _.isNaN(res) then 0 else res
+        getCssPropInEms($(e), 'top') + getCssPropInEms($(e), 'height') || 0
       usedSpace = if _(usedSpace).any() then _.max(usedSpace) else 0
-      parentTopIndent = getCssPropInEms($block, 'top')
+      parentTopIndent = getCssPropInEms($block, 'top') || 0
       topIndent = _.max [usedSpace, parentTopIndent]
-      topIndent = 0 if _.isNaN topIndent
       "right: #{sideIndent}em; top: #{topIndent}em"
     getSubtreeIdsRec = (ids)->
+      return [] unless _(ids).any()
       subIds = Goals.find(parentGoalId: {$in: ids}).fetch()
-      if _(subIds).any()
-        subIds.concat getSubtreeIdsRec(_(subIds).pluck('_id'))
-      else
-        []
+      subIds.concat getSubtreeIdsRec _.pluck subIds, '_id'
     getSubtreeMaxWidth = (ids)->
       subtreeGoals = getSubtreeIdsRec(ids)
       parentGoalIds = _.chain(subtreeGoals).pluck('parentGoalId').uniq().value()
