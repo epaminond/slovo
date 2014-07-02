@@ -1,6 +1,5 @@
-Template.header.helpers activeRouteClass: ->
-  args = Array::slice.call(arguments, 0)
-  args.pop()
+Template.header.activeRouteClass = ->
+  args = _.chain(arguments).slice(0).initial().value()
   active = _.any args, (name) ->
     Router.current() && Router.current().route.name == name
-  active and "active"
+  active && "active"
