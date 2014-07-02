@@ -10,7 +10,7 @@ Template.goalConstructor.helpers
     UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
     inMainFlow = @inMainFlow(goal)
-    strokeStyle = if @inMainFlow(goal) then "#428bca" else "gray"
+    strokeStyle = if inMainFlow then "#428bca" else "gray"
 
     endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Left",
       anchor: "Left", maxConnections: -1, paintStyle: { fillStyle: strokeStyle }
@@ -57,6 +57,6 @@ Template.goalConstructor.rendered = ->
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
       jsPlumb.doWhileSuspended =>
-        return unless @data.goal._id
+        return unless @data.goal._id?
         Template.goalConstructor.displayGoalTreeRecursive Goals.findOne(@data.goal._id)
         setTimeout (-> jsPlumb.repaintEverything()), 1
