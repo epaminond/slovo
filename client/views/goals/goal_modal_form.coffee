@@ -2,6 +2,7 @@ Template.goalModalForm.helpers
   parentGoal:     -> Goals.findOne(@goal.parentGoalId)
   disabledDelete: -> 'disabled' unless @goal._id?
   removeSubtree:  (goal)->
+    return unless goal._id?
     Goals.find(parentGoalId: goal._id).forEach (el)->
       Template.goalModalForm.removeSubtree(el)
       Goals.remove el._id
