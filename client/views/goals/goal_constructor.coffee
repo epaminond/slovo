@@ -12,7 +12,7 @@ Template.goalConstructor.helpers
     inMainFlow = @inMainFlow(goal)
     strokeStyle = if inMainFlow then "#428bca" else "gray"
 
-    endpoint = jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Left",
+    endpoint = jsPlumb.addEndpoint block.lastNode(), uuid: "#{goal._id}-Left",
       anchor: "Left", maxConnections: -1, paintStyle: { fillStyle: strokeStyle }
     endpoint.bind "click", (endpoint)->
       Session.set 'modalParams',
@@ -22,7 +22,7 @@ Template.goalConstructor.helpers
 
     return unless goal.parentGoalId?
 
-    jsPlumb.addEndpoint block.dom.elements(), uuid: "#{goal._id}-Right",
+    jsPlumb.addEndpoint block.lastNode(), uuid: "#{goal._id}-Right",
       anchor: "Right", maxConnections: 1, paintStyle: { fillStyle: strokeStyle, radius: 2 }
 
     connection = jsPlumb.connect
