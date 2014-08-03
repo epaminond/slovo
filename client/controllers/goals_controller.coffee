@@ -18,6 +18,11 @@ GoalsController = RouteController.extend
     goal: Goals.findOne @params._id
     action: 'update'
 
+@GoalConstructorController = GoalsController.extend
+  template: "goalConstructor"
+  data: ->
+    goal: Goals.findOne @params._id
+
 @GoalsNewController = GoalsController.extend
   template: "goalForm"
   data:
