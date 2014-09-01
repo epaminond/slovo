@@ -5,13 +5,14 @@
 
 standard-app-packages
 coffeescript
-jade
-bootstrap-3
 accounts-password
-fast-render
-spin
-iron-router
-iron-router-progress
-accounts-ui-bootstrap-3
-autoform
-collection2
+meteorhacks:fast-render@1.0.0
+sacha:spin@2.0.4
+iron:router@0.9.1
+mrt:iron-router-progress@0.4.1
+aldeed:autoform@0.17.1
+aldeed:collection2@0.4.6
+ian:accounts-ui-bootstrap-3
+waitingkuo:jade
+mizzao:bootstrap-3
+
