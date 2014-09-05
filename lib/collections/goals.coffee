@@ -1,4 +1,4 @@
-@Goals = new Meteor.Collection 'goals',
+@Goals = new Mongo.Collection 'goals',
   schema:
     _id:
       type: String

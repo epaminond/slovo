@@ -1,1 +1,1 @@
-@Vectors = new Meteor.Collection 'vectors'
+@Vectors = new Mongo.Collection 'vectors'

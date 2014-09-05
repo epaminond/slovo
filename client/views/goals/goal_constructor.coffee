@@ -6,8 +6,8 @@ Template.goalConstructor.helpers
     else
       true
   displayGoal: (goal)->
-    block = UI.renderWithData Template.goalConstructorItem, goal
-    UI.insert block, document.getElementById(jsPlumb.Defaults.Container)
+    block = Blaze.renderWithData Template.goalConstructorItem, goal
+    Blaze.insert block, document.getElementById(jsPlumb.Defaults.Container)
 
     inMainFlow = @inMainFlow(goal)
     strokeStyle = if inMainFlow then "#428bca" else "gray"
@@ -43,7 +43,7 @@ Template.goalConstructor.rendered = ->
 
   $(window).bind 'resize', -> jsPlumb.repaintEverything()
 
-  Deps.autorun =>
+  Tracker.autorun =>
     $('.goal-block').each (i, block) -> jsPlumb.remove(block)
     jsPlumb.ready =>
       jsPlumb.reset()
