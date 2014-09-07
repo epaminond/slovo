@@ -6,13 +6,12 @@
 meteor-platform
 coffeescript
 accounts-password
-meteorhacks:fast-render@1.0.0
-sacha:spin@2.0.4
-iron:router@0.9.1
-mrt:iron-router-progress@0.4.1
-aldeed:autoform@0.17.1
-aldeed:collection2@0.4.6
+meteorhacks:fast-render
+iron:router
+mrt:iron-router-progress
+aldeed:collection2
 ian:accounts-ui-bootstrap-3
 waitingkuo:jade
 mizzao:bootstrap-3
+aldeed:autoform
 

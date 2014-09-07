@@ -6,8 +6,8 @@ Template.goalConstructor.helpers
     else
       true
   displayGoal: (goal)->
-    block = Blaze.renderWithData Template.goalConstructorItem, goal
-    Blaze.insert block, document.getElementById(jsPlumb.Defaults.Container)
+    node  = document.getElementById(jsPlumb.Defaults.Container)
+    block = Blaze.renderWithData Template.goalConstructorItem, goal, node
 
     inMainFlow = @inMainFlow(goal)
     strokeStyle = if inMainFlow then "#428bca" else "gray"
