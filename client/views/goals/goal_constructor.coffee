@@ -43,7 +43,7 @@ Template.goalConstructor.rendered = ->
 
   $(window).bind 'resize', -> jsPlumb.repaintEverything()
 
-  Tracker.autorun =>
+  goalTreeUpdater = Tracker.autorun =>
     $('.goal-block').each (i, block) -> jsPlumb.remove(block)
     jsPlumb.ready =>
       jsPlumb.reset()
@@ -58,4 +58,6 @@ Template.goalConstructor.rendered = ->
 
       jsPlumb.doWhileSuspended =>
         Template.goalConstructor.displayGoalTreeRecursive @data.goal
-        setTimeout (-> jsPlumb.repaintEverything()), 1
+        Meteor.setTimeout (-> jsPlumb.repaintEverything()), 0
+
+  Router.onRun => goalTreeUpdater.stop()
