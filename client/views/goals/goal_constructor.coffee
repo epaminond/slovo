@@ -2,14 +2,21 @@ Template.goalConstructor.helpers
   inMainFlow: (goal)->
     parentGoal = Goals.findOne(goal.parentGoalId)
     if parentGoal?
-      parentGoal.mainChildId == goal._id && @inMainFlow(parentGoal)
+      parentGoal.mainChildId == goal._id && Template.goalConstructor.__helpers.get('inMainFlow')(parentGoal)
     else
       true
-  displayGoal: (goal)->
+  modalParams: -> Session.get('modalParams') || goal: {}
+
+Template.goalConstructor.rendered = ->
+  AutoForm.resetForm 'goalModalForm'
+
+  $(window).bind 'resize', -> jsPlumb.repaintEverything()
+
+  displayGoal = (goal)->
     node  = document.getElementById(jsPlumb.Defaults.Container)
     block = Blaze.renderWithData Template.goalConstructorItem, goal, node
 
-    inMainFlow = @inMainFlow(goal)
+    inMainFlow = Template.goalConstructor.__helpers.get('inMainFlow')(goal)
     strokeStyle = if inMainFlow then "#428bca" else "gray"
 
     endpoint = jsPlumb.addEndpoint block.lastNode(), uuid: "#{goal._id}-Left",
@@ -31,17 +38,11 @@ Template.goalConstructor.helpers
     connection.bind "click", (conn)->
       Goals.update(goal.parentGoalId, $set: { mainChildId: goal._id }) unless inMainFlow
 
-  displayGoalTreeRecursive: (goal)->
-    @displayGoal(goal) if goal._id?
+  displayGoalTreeRecursive = (goal)->
+    displayGoal(goal) if goal._id?
     childGoals = Goals.find $and: [ {parentGoalId: {$exists: true}}, {parentGoalId: goal._id} ]
     for childGoal in childGoals.fetch()
-      @displayGoalTreeRecursive childGoal
-  modalParams: -> Session.get('modalParams') || goal: {}
-
-Template.goalConstructor.rendered = ->
-  AutoForm.resetForm 'goalModalForm'
-
-  $(window).bind 'resize', -> jsPlumb.repaintEverything()
+      displayGoalTreeRecursive childGoal
 
   goalTreeUpdater = Tracker.autorun =>
     $('.goal-block').each (i, block) -> jsPlumb.remove(block)
@@ -57,7 +58,7 @@ Template.goalConstructor.rendered = ->
       jsPlumb.setContainer document.getElementById(jsPlumb.Defaults.Container)
 
       jsPlumb.doWhileSuspended =>
-        Template.goalConstructor.displayGoalTreeRecursive @data.goal
+        displayGoalTreeRecursive @data.goal
         Meteor.setTimeout (-> jsPlumb.repaintEverything()), 0
 
   Router.onRun => goalTreeUpdater.stop()
